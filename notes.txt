@@ -1,0 +1,27 @@
+Image Search Page
+x Contains a search box and an area to show search results 
+x Images are updated live as search text is entered 
+● Images should be able to be downloaded 
+● Images should display information on hover:
+	x Link to the profile of the image uploader
+	○ Button to allow the image to be saved as a favorite
+		■ On click, display a popover element that allows the user to choose 		  	  or create a list, and add the image to the list
+
+● Note: think about to properly size the images
+
+
+Favorite images page
+● Contains favorited images grouped into lists
+● List title and description are editable
+● Images should be able to be downloaded
+
+photo.user.username
+photo.user.name 
+
+app name: zehitomo-tam-coding-challenge
+
+----
+
+Create backend where they can save their pictures
+(MERN stack)
+

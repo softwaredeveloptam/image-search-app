@@ -1,0 +1,22 @@
+.imgContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    padding-top: 50px;
+    font-family: "Antic";
+  }
+  
+  .photoImg {
+    max-width: 90%;
+    border-radius: 40px 10px;
+    cursor: url('https://i.ibb.co/SNTqVR1/testcursor.png'), auto;
+  }
+  
+  .photoNameClickable {
+    cursor: url('https://i.ibb.co/SNTqVR1/testcursor.png'), auto;
+  }
+  
+  .noPhoto {
+    padding-top: 20px;
+    padding-bottom: 200px;
+  }
+  
