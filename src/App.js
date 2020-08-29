@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "./components/Navbar";
+
+// Unsplash Instance Library
 import Unsplash from "unsplash-js";
+
+// HTTP Request Library
 import axios from "axios";
-import "./App.css";
+
+// React-Redux
+import { useSelector, useDispatch, useStore } from "react-redux";
+import { addPhoto, selectPhoto } from "./features/favorites/favoritesSlice";
+
+// Styles
+import "./styles/App.css";
 
 const unsplash = new Unsplash({
   accessKey: process.env.REACT_APP_UNSPLASH_ACCESS_KEY,
@@ -13,6 +23,10 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(undefined);
   const [hoverEffect, setHoverEffect] = useState(false);
+
+  const favoritePhotos = useSelector(selectPhoto);
+  const dispatch = useDispatch();
+  const storeState = useStore();
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -71,6 +85,7 @@ function App() {
         onClick={() => {
           console.log("Search Term: ", searchTerm);
           console.log("Search Results\n", searchResults);
+          console.log("Store State\n", storeState.getState());
         }}
       >
         Test
@@ -102,7 +117,10 @@ function App() {
                       >
                         Download
                       </button>
-                      <button>Favorite</button>
+                      <button
+                        onClick={() => {
+                          dispatch(addPhoto(photo.id));
+                        }}>Favorite</button>
                       <p>
                         Photo by{" "}
                         <a
