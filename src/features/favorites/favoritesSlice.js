@@ -10,7 +10,8 @@ export const favoritesSlice = createSlice({
       state.photos.push(action.payload);
     },
     removePhoto(state, action) {
-      state.photos.pop(action.payload);
+      // get the id of the picture, then remove it
+      state.photos.pop();
     },
   },
 });
@@ -19,4 +20,4 @@ export const { addPhoto, removePhoto } = favoritesSlice.actions;
 
 export default favoritesSlice.reducer;
 
-export const selectPhoto = state => state.favorites.photos;
+export const selectAllPhotos = state => state.favorites.photos;
