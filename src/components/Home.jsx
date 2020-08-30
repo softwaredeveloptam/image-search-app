@@ -6,17 +6,26 @@ import { unsplash } from "../utils/index";
 // Http Fetch Library
 import axios from "axios";
 
-// React-Redux 
+// React-Redux
 import { useDispatch, useStore } from "react-redux";
-import { addPhoto } from "../features/favorites/favoritesSlice";
+import {
+  addPhoto,
+  addList,
+  favoritesSelectors,
+} from "../features/favorites/favoritesSlice";
+
+// Components
+import SinglePhoto from "./SinglePhoto";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(undefined);
-	const [hoverEffect, setHoverEffect] = useState(false);
-	
-	const storeState = useStore();
-	const dispatch = useDispatch();
+  const [hoverEffect, setHoverEffect] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [singlePhotoInfo, setSinglePhotoInfo] = useState({});
+
+  const storeState = useStore();
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -92,6 +101,11 @@ export default function Home() {
                 >
                   <img
                     // className={"photoImg"}
+                    onClick={() => {
+                      console.log("We're here in Home Photos onClick");
+                      setShowModal(true);
+                      setSinglePhotoInfo(photo);
+                    }}
                     onMouseEnter={() => setHoverEffect(true)}
                     onMouseLeave={() => setHoverEffect(false)}
                     src={photo.urls.small}
@@ -110,7 +124,25 @@ export default function Home() {
                       </button>
                       <button
                         onClick={() => {
-                          dispatch(addPhoto(photo.id));
+                          if (favoritesSelectors.selectById(storeState.getState(), "Default")) {
+                            let newObj = {
+                              id: "Default",
+                              listTitle: "Default",
+                              description: "none",
+                              photoId: photo.id,
+                            };
+                            
+                            dispatch(addPhoto(newObj));
+                          } else {
+                            console.log("created a new list");
+                            let newObj = {
+                              id: "Default",
+                              listTitle: "Default",
+                              description: "none",
+                              photoArr: [photo.id],
+                            };
+                            dispatch(addList(newObj));
+                          }
                         }}
                       >
                         Favorite
@@ -137,6 +169,11 @@ export default function Home() {
       ) : (
         <p>Please use the search bar to look up photos</p>
       )}
+      <div>
+        {showModal ? (
+          <SinglePhoto photo={singlePhotoInfo} setShowModal={setShowModal} />
+        ) : null}
+      </div>
     </>
   );
 }

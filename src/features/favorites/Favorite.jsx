@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { fetchPhoto, downloadPhoto } from "../../utils/index";
 import { useSelector, useDispatch } from "react-redux";
-import { addPhoto, removePhoto, selectAllPhotos } from "./favoritesSlice";
+import { addPhoto, removePhoto, favoritesSelectors } from "./favoritesSlice";
+import SinglePhoto from "../../components/SinglePhoto";
 
 export default function Favorite(props) {
-  const favoritePhotos = useSelector(selectAllPhotos);
+  const favoritePhotos = useSelector(favoritesSelectors);
   const dispatch = useDispatch();
 
   const [photos, setPhotos] = useState([]);
   const [hoverEffect, setHoverEffect] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [singlePhotoInfo, setSinglePhotoInfo] = useState({});
 
   async function loadPhotos() {
-    if(favoritePhotos.length !== 0) {
+    if (favoritePhotos.length !== 0) {
       let photoArr = [];
 
-      for(let x = 0; x < favoritePhotos.length; x++) {
+      for (let x = 0; x < favoritePhotos.length; x++) {
         let newPhoto = await fetchPhoto(favoritePhotos[x]);
         photoArr.push(newPhoto);
       }
@@ -23,27 +26,11 @@ export default function Favorite(props) {
     } else {
       console.log("No photos saved in State");
     }
-  } 
+  }
 
   useEffect(() => {
     loadPhotos();
   }, [photos]);
-
-
-  /*
-    x Click on Favorites Tab 
-    x Hide Main Page
-    x Allow Favorite.jsx to appear
-
-    // photo ID available then fetch the photo
-
-    Show a pop down for showing all default pictures
-    the popdown should have titles for other lists
-
-    Click on type of list to show
-    Each picture should be categorized into a list
-
-  */
 
   return (
     <div>
@@ -54,67 +41,152 @@ export default function Favorite(props) {
         <button onClick={() => dispatch(removePhoto(props.photo.id))}>
           Remove Photo
         </button>
-        <button onClick={() => {
-          console.log(favoritePhotos);
-          console.log(photos);
-        }}>Current State of Photos</button>
-        <button onClick={() => {
-          loadPhotos();
-        }}>Trigger Load Photos</button>
+        <button
+          onClick={() => {
+            console.log(favoritePhotos);
+            console.log(photos);
+          }}
+        >
+          Current State of Photos
+        </button>
+        <button
+          onClick={() => {
+            loadPhotos();
+          }}
+        >
+          Trigger Load Photos
+        </button>
       </div>
 
       <div>
-        {photos.map((photo, index) => {
-          return (
-            <div
-              key={index}
-              // className={"imgContainer"}
-            >
-              <img
-                // className={"photoImg"}
-                onMouseEnter={() => setHoverEffect(true)}
-                onMouseLeave={() => setHoverEffect(false)}
-                src={photo.urls.small}
-                alt={photo.alt_description}
-              ></img>
-            
-              {!hoverEffect && (
-                <>
-                  <br />
-                  <button
-                    className={"btn"}
-                    onClick={() => {
-                      downloadPhoto(photo.id);
-                    }}
-                  >
+        {photos.map((photo) => {
+          if (hoverEffect) {
+            return (
+              <div key={photo.id}>
+                <img
+                  // className={"photoImg"}
+                  // onMouseEnter={() => setHoverEffect(true)}
+                  onClick={() => {
+                    console.log("We're here in Favorite Photos onClick");
+                    setShowModal(true);
+                    setSinglePhotoInfo(photo);
+                  }}
+                  onMouseLeave={() => setHoverEffect(false)}
+                  src={photo.urls.small}
+                  alt={photo.alt_description}
+                ></img>
+
+                <button
+                  className={"btn"}
+                  onClick={() => {
+                    downloadPhoto(photo.id);
+                  }}
+                >
                   Download
-                  </button>
-                  
-                  <button
-                    onClick={() => {
-                      dispatch(addPhoto(photo.id));
-                    }}
-                  >
+                </button>
+
+                <button
+                  onClick={() => {
+                    dispatch(addPhoto(photo.id));
+                  }}
+                >
                   Favorite
-                  </button>
-                  
-                  <p>
-                    Photo by{" "}
-                      <a
-                        href={`https://unsplash.com/@${photo.user.username}?utm_source=zehitomo-tam-coding-challenge&utm_medium=referral`}
-                      >
-                       {photo.user.name}
-                      </a>{" "}
-                        on{" "}
-                        <a href="https://unsplash.com/?utm_source=zehitomo-tam-coding-challenge&utm_medium=referral">
-                          Unsplash
-                        </a>
-                  </p>
-                </>
-              )}
-            </div>
-          )})}
+                </button>
+
+                <p>
+                  Photo by{" "}
+                  <a
+                    href={`https://unsplash.com/@${photo.user.username}?utm_source=zehitomo-tam-coding-challenge&utm_medium=referral`}
+                  >
+                    {photo.user.name}
+                  </a>{" "}
+                  on{" "}
+                  <a href="https://unsplash.com/?utm_source=zehitomo-tam-coding-challenge&utm_medium=referral">
+                    Unsplash
+                  </a>
+                </p>
+              </div>
+            );
+          } else {
+            return (
+              <div
+                key={photo.id}
+                // className={"imgContainer"}
+              >
+                <img
+                  // className={"photoImg"}
+                  onMouseEnter={() => setHoverEffect(true)}
+                  // onMouseLeave={() => setHoverEffect(false)}
+                  src={photo.urls.small}
+                  alt={photo.alt_description}
+                ></img>
+              </div>
+            );
+          }
+        })}
+      </div>
+
+      <div>
+        {showModal ? (
+          <SinglePhoto photo={singlePhotoInfo} setShowModal={setShowModal}/>
+        ) : null}
       </div>
     </div>
-  )
+  );
 }
+
+/*
+
+ function HasHover(props) {
+    const { photo } = props;
+
+    return (
+      <div key={photo.id}>
+        <img
+          onMouseLeave={() => setHoverEffect(false)}
+          src={photo.urls.small}
+          alt={photo.alt_description}
+        ></img>
+
+        <button
+          className={"btn"}
+          onClick={() => {
+            downloadPhoto(photo.id);
+          }}
+        >
+          Download
+        </button>
+
+        <button
+          onClick={() => {
+            dispatch(addPhoto(photo.id));
+          }}
+        >
+          Favorite
+        </button>
+      </div>
+    );
+  }
+
+  function HasNoHover(props) {
+    const { photo } = props;
+
+    return (
+      <div key={photo.id}>
+        <img
+          onMouseEnter={() => setHoverEffect(true)}
+          src={photo.urls.small}
+          alt={photo.alt_description}
+        ></img>
+      </div>
+    );
+  }
+
+  function MainComp(props) {
+    if (hoverEffect) {
+      return <HasHover />;
+    }
+    return <HasNoHover />;
+  }
+
+*/

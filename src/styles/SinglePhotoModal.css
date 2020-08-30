@@ -1,0 +1,123 @@
+.modal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 40px 10px;
+  }
+  
+  .modal-content {
+    text-align: center;
+    background-color: #f4dbd8;
+    margin: 15% auto;
+    padding: 20px;
+    border: 2px solid #383d3b;
+    width: 50%;
+    font-size: 20px;
+    color: #143642;
+    border-radius: 40px 10px;
+    font-family: "Antic";
+  }
+  .modalImage {
+    max-width: 100%;
+    height: auto;
+    border-radius: 40px 10px;
+  }
+  .drinkName {
+    font-size: 50px;
+    background: #b76935;
+    padding: 2px;
+  }
+  .alcoholContent {
+    text-align: left;
+  }
+  .glassType {
+    text-align: left;
+    background: #b76935;
+    padding: 2px;
+  }
+  .drinkCategory {
+    text-align: left;
+  }
+  .ingredientListContainer {
+    background: #b76935;
+    padding: 2px;
+    text-align: left;
+  }
+  .ingredientList {
+    background: #b76935;
+    padding: 2px;
+    list-style: none;
+  }
+  .instructions {
+    text-align: left;
+  }
+  /* .button {
+    font-family: "Antic";
+  } */
+  .input {
+    background: #f4dbd8;
+    padding: 10px;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+  .button {
+    font-family: "Antic";
+    display: inline-block;
+    position: relative;
+    font-size: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #f4dbd8;
+    width: 80px;
+    height: 40px;
+    line-height: 30px;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+    font-weight: bold;
+    background-image: -webkit-linear-gradient(#b76935 0%, #2f1000 100%);
+    background-image: linear-gradient(#b76935 0%, #2f1000 100%);
+    text-shadow: 1px 1px 1px #2f1000;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
+    cursor: pointer;
+  }
+  
+  .button:active {
+    -ms-transform: translateY(2px);
+    -webkit-transform: translateY(2px);
+    transform: translateY(2px);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+    background-image: -webkit-linear-gradient(#b76935 0%, #2f1000 100%);
+    background-image: linear-gradient(#b76935 0%, #2f1000 100%);
+  }
+  
+  .signin-field {
+    border-radius: 5px;
+  }
+  
+  /*
+  COLOR PALETTE
+  
+  BLACK BEAN (DARK BROWN) #2F1000
+  
+  MISTY ROSE (WHITE) #F4DBD8
+  
+  LIVER (DOGS) (ORANGE) #B76935
+  
+  ONYX (GRAY) #383D3B
+  
+  COFFEE (LIGHT BROWN) #6F23B
+  
+  SEAL BROWN (RUST RED) #621B00
+  
+  GUNMETAL (BLUE) #143642
+  
+  */
+  

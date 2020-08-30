@@ -1,23 +1,45 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter, current } from "@reduxjs/toolkit";
+
+const favoritesAdapter = createEntityAdapter();
+
+const selectId = (instance) => {
+  return instance.listTitle;
+}
 
 export const favoritesSlice = createSlice({
   name: "favorites",
-  initialState: {
-		photos: []
-	},
+  initialState: favoritesAdapter.getInitialState(),
   reducers: {
+    addList(state, action) {
+      console.log(action.payload);
+      favoritesAdapter.addOne(state, action.payload);
+    },
+    removeList(state, action) {
+      const id = action.payload.title;
+      action.payload.id = id;
+      favoritesAdapter.removeOne(state, action.payload);
+    },
     addPhoto(state, action) {
-      state.photos.push(action.payload);
+      const {id} = action.payload;
+      let list = state.entities[id];
+      console.log(current(list), "we're in addPhoto");
+      if(current(list)) {
+        let newList = current(list);
+        newList.photoArr.push(action.payload.photoId);
+      }
     },
     removePhoto(state, action) {
-      // get the id of the picture, then remove it
-      state.photos.pop();
+      const {title} = action.payload;
+      const list = state.entities[title]
+      // if(list) {
+      //   remove Photo from Array
+      // }   
     },
   },
 });
 
-export const { addPhoto, removePhoto } = favoritesSlice.actions;
+export const { addList, addPhoto, removeList, removePhoto } = favoritesSlice.actions;
 
 export default favoritesSlice.reducer;
 
-export const selectAllPhotos = state => state.favorites.photos;
+export const favoritesSelectors = favoritesAdapter.getSelectors(state => state.favorites);
