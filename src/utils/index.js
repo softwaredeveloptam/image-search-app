@@ -18,20 +18,6 @@ export const fetchPhoto = async (photoId) => {
   }
 };
 
-// Pending Implementation (Refactoring)
-export const fetchPhotos = async (searchWord) => {
-  if (searchWord) {
-    const photoJSON = await unsplash.search.photos(searchWord, 1, 10, {
-      orientation: "portrait",
-    });
-    const photos = await photoJSON.json();
-    return photos;
-  } else {
-    return undefined;
-  }
-};
-
-// Pending Implementation (Refactoring)
 export const downloadPhotoType = async (photoId, type) => {
   if (photoId) {
     const getDownloadPhotoJSON = await unsplash.photos.getPhoto(photoId);

@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 // Utils
-import { unsplash } from "../utils/index";
-
-// Http Fetch Library
-import axios from "axios";
+import { unsplash, downloadPhotoType } from "../utils/index";
 
 // React-Redux
-import {useStore, useDispatch, useSelector} from "react-redux";
+import {useStore, useDispatch} from "react-redux";
 
 import {
   addPhotoToList,
@@ -41,29 +38,6 @@ export default function Home() {
       setSearchResults(photos);
     } else {
       setSearchResults(undefined);
-    }
-  };
-
-  const downloadPhoto = async (photoId) => {
-    if (photoId) {
-      const getDownloadPhotoJSON = await unsplash.photos.getPhoto(photoId);
-      const photoObj = await getDownloadPhotoJSON.json();
-      unsplash.photos.downloadPhoto(photoObj);
-
-      let response = await axios({
-        url: photoObj.urls.regular,
-        method: "GET",
-        responseType: "blob",
-      });
-
-      let filename = photoObj.user.username + "-" + photoObj.id + ".jpg";
-
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", filename);
-      document.body.appendChild(link);
-      link.click();
     }
   };
 
@@ -116,7 +90,7 @@ export default function Home() {
                       <button
                         className={"btn"}
                         onClick={() => {
-                          downloadPhoto(photo.id);
+                          downloadPhotoType(photo.id, "regular");
                         }}
                       >
                         Download

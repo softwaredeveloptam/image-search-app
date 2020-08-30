@@ -1,7 +1,9 @@
 # Zehitomo Take Home Project
 
-Files needed to run the project
+Files needed to run the project:
+
 `.env.local`
+
 ```
 REACT_APP_UNSPLASH_ACCESS_KEY
 REACT_APP_UNSPLASH_SECRET_KEY
@@ -25,6 +27,10 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+---
+
+## QnA for the Take Home Project
 
 **Do you have any strong rationale for why you chose specific development technologies for this project that you would like to share with the team?**
 
