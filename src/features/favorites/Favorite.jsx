@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { fetchPhoto, downloadPhoto } from "../../utils/index";
 import { useSelector, useDispatch } from "react-redux";
-import { addPhoto, removePhoto, favoritesSelectors } from "./favoritesSlice";
+import {
+  addPhotoToList,
+  removePhotoFromList,
+  favoritesSelectors,
+} from "./favoritesSlice";
 import SinglePhoto from "../../components/SinglePhoto";
 
 export default function Favorite(props) {
-  const favoritePhotos = useSelector(favoritesSelectors);
+  let favoritePhotos = useSelector(state => favoritesSelectors.selectById(state, "Default")) || {
+    photoArr: [],
+  };
+
   const dispatch = useDispatch();
 
   const [photos, setPhotos] = useState([]);
@@ -13,38 +20,35 @@ export default function Favorite(props) {
   const [showModal, setShowModal] = useState(false);
   const [singlePhotoInfo, setSinglePhotoInfo] = useState({});
 
+
   async function loadPhotos() {
-    if (favoritePhotos.length !== 0) {
+
+    if (favoritePhotos.photoArr.length > 1) {
       let photoArr = [];
 
-      for (let x = 0; x < favoritePhotos.length; x++) {
-        let newPhoto = await fetchPhoto(favoritePhotos[x]);
+      for (let x = 0; x < favoritePhotos.photoArr.length; x++) {
+        let newPhoto = await fetchPhoto(favoritePhotos.photoArr[x]);
         photoArr.push(newPhoto);
       }
-
+      console.log("We're setting new photos!")
       setPhotos(photoArr);
     } else {
       console.log("No photos saved in State");
     }
+    console.log("We're in loadPhotos");
   }
 
   useEffect(() => {
     loadPhotos();
-  }, [photos]);
+  }, []);
 
   return (
     <div>
       <div>
-        <button onClick={() => dispatch(addPhoto(props.photo.id))}>
-          Add Photo
-        </button>
-        <button onClick={() => dispatch(removePhoto(props.photo.id))}>
-          Remove Photo
-        </button>
         <button
           onClick={() => {
-            console.log(favoritePhotos);
-            console.log(photos);
+            console.log("** Favorite Photos **\n", favoritePhotos);
+            console.log("** Photos **\n", photos);
           }}
         >
           Current State of Photos
@@ -85,14 +89,6 @@ export default function Favorite(props) {
                   Download
                 </button>
 
-                <button
-                  onClick={() => {
-                    dispatch(addPhoto(photo.id));
-                  }}
-                >
-                  Favorite
-                </button>
-
                 <p>
                   Photo by{" "}
                   <a
@@ -111,12 +107,9 @@ export default function Favorite(props) {
             return (
               <div
                 key={photo.id}
-                // className={"imgContainer"}
               >
                 <img
-                  // className={"photoImg"}
                   onMouseEnter={() => setHoverEffect(true)}
-                  // onMouseLeave={() => setHoverEffect(false)}
                   src={photo.urls.small}
                   alt={photo.alt_description}
                 ></img>
@@ -128,65 +121,9 @@ export default function Favorite(props) {
 
       <div>
         {showModal ? (
-          <SinglePhoto photo={singlePhotoInfo} setShowModal={setShowModal}/>
+          <SinglePhoto photo={singlePhotoInfo} setShowModal={setShowModal} />
         ) : null}
       </div>
     </div>
   );
 }
-
-/*
-
- function HasHover(props) {
-    const { photo } = props;
-
-    return (
-      <div key={photo.id}>
-        <img
-          onMouseLeave={() => setHoverEffect(false)}
-          src={photo.urls.small}
-          alt={photo.alt_description}
-        ></img>
-
-        <button
-          className={"btn"}
-          onClick={() => {
-            downloadPhoto(photo.id);
-          }}
-        >
-          Download
-        </button>
-
-        <button
-          onClick={() => {
-            dispatch(addPhoto(photo.id));
-          }}
-        >
-          Favorite
-        </button>
-      </div>
-    );
-  }
-
-  function HasNoHover(props) {
-    const { photo } = props;
-
-    return (
-      <div key={photo.id}>
-        <img
-          onMouseEnter={() => setHoverEffect(true)}
-          src={photo.urls.small}
-          alt={photo.alt_description}
-        ></img>
-      </div>
-    );
-  }
-
-  function MainComp(props) {
-    if (hoverEffect) {
-      return <HasHover />;
-    }
-    return <HasNoHover />;
-  }
-
-*/

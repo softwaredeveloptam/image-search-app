@@ -7,9 +7,10 @@ import { unsplash } from "../utils/index";
 import axios from "axios";
 
 // React-Redux
-import { useDispatch, useStore } from "react-redux";
+import {useStore, useDispatch, useSelector} from "react-redux";
+
 import {
-  addPhoto,
+  addPhotoToList,
   addList,
   favoritesSelectors,
 } from "../features/favorites/favoritesSlice";
@@ -97,10 +98,8 @@ export default function Home() {
               return (
                 <div
                   key={index}
-                  // className={"imgContainer"}
                 >
                   <img
-                    // className={"photoImg"}
                     onClick={() => {
                       console.log("We're here in Home Photos onClick");
                       setShowModal(true);
@@ -125,23 +124,22 @@ export default function Home() {
                       <button
                         onClick={() => {
                           if (favoritesSelectors.selectById(storeState.getState(), "Default")) {
-                            let newObj = {
+                            console.log("adding to an existing list");
+                            let newPhoto = {
                               id: "Default",
-                              listTitle: "Default",
-                              description: "none",
                               photoId: photo.id,
                             };
                             
-                            dispatch(addPhoto(newObj));
+                            dispatch(addPhotoToList(newPhoto));
                           } else {
                             console.log("created a new list");
-                            let newObj = {
+                            let newList = {
                               id: "Default",
                               listTitle: "Default",
                               description: "none",
                               photoArr: [photo.id],
                             };
-                            dispatch(addList(newObj));
+                            dispatch(addList(newList));
                           }
                         }}
                       >

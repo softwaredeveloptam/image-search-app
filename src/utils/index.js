@@ -4,10 +4,19 @@ import Unsplash from "unsplash-js";
 // Http Fetch Library
 import axios from "axios";
 
+// Util Functions
 export const unsplash = new Unsplash({
   accessKey: process.env.REACT_APP_UNSPLASH_ACCESS_KEY,
   secret: process.env.REACT_APP_UNSPLASH_SECRET_KEY,
 });
+
+export const fetchPhoto = async (photoId) => {
+    if (photoId) {
+      const getDownloadPhotoJSON = await unsplash.photos.getPhoto(photoId);
+      const photoObj = await getDownloadPhotoJSON.json();
+      return photoObj;
+    }
+  }
 
 // Pending Implementation (Refactoring)
 export const fetchPhotos = async (searchWord) => {
@@ -21,14 +30,6 @@ export const fetchPhotos = async (searchWord) => {
 		return undefined;
 	}
 };
-
-export const fetchPhoto = async (photoId) => {
-    if (photoId) {
-      const getDownloadPhotoJSON = await unsplash.photos.getPhoto(photoId);
-      const photoObj = await getDownloadPhotoJSON.json();
-      return photoObj;
-    }
-  }
 
 // Pending Implementation (Refactoring)
 export const downloadPhoto = async (photoId) => {

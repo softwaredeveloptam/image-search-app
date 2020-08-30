@@ -28,16 +28,16 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 **Do you have any strong rationale for why you chose specific development technologies for this project that you would like to share with the team?**
 
-- React and Redux go well together in terms of handling state and reactive components. For me, being able to handle global state and being able to make quick additions to it makes it robust and easy to configure. 
+- React and Redux go well together in terms of handling state and reactive components. For me, being able to handle global state and being able to make quick additions to the app makes it robust and easy to configure for future features. It's a very popular framework with a great ecosystem for finding out ways to add features. 
 
 **Do you have any strong rationale for why you chose specific design decisions (software architecture design) over alternatives?**
 
-- I really wanted to create a global state with Redux so that Favorite Photos are saved properly with their lists.
-When I create a backend later for this, I would like for it have state management with authentication.
+- I like to sort out the way my files are located so that I can come back at a later time and find out what I did quickly. I hope this translates well for others who are reading my applications as well. I had a features section where
+all the particular files for a feature can co-exist together. I also have a utils folder for anything that appears more than once at many different areas of the app. 
 
 **Do you have any strong rationale for why you made specific implementation decisions over alternatives?**
 
-- At first when I created the project, I wanted to have props passed from top to bottom and global state for the favorited items. I wanted to go with a features/components style so that it's easier to read from a React point of view.
+- Some of the other alternatives like Angular and Vue exist, I'm not very good at Angular at all. Vue is nice as well with a great ecosystem. I prefer React over Vue due to it being similar to writing vanilla JavaScript. JSX is easy to understand and it's nice to see familarity. Vue is powerful but the structure of the apps are very different. Every page is styled within it's component and I feel like that might hinder someone who is deep in UI/UX design when they want to make overall changes to the app rather than specific components.
 
 **What else would you like to improve if you have more time? This can be in simple format like a TODO bullet points**
 
