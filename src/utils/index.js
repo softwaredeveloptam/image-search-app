@@ -11,46 +11,63 @@ export const unsplash = new Unsplash({
 });
 
 export const fetchPhoto = async (photoId) => {
-    if (photoId) {
-      const getDownloadPhotoJSON = await unsplash.photos.getPhoto(photoId);
-      const photoObj = await getDownloadPhotoJSON.json();
-      return photoObj;
-    }
+  if (photoId) {
+    const getDownloadPhotoJSON = await unsplash.photos.getPhoto(photoId);
+    const photoObj = await getDownloadPhotoJSON.json();
+    return photoObj;
   }
-
-// Pending Implementation (Refactoring)
-export const fetchPhotos = async (searchWord) => {
-	if (searchWord) {
-		const photoJSON = await unsplash.search.photos(searchWord, 1, 10, {
-			orientation: "portrait",
-		});
-		const photos = await photoJSON.json();
-		return photos;
-	} else {
-		return undefined;
-	}
 };
 
 // Pending Implementation (Refactoring)
-export const downloadPhoto = async (photoId) => {
-	if (photoId) {
-		const getDownloadPhotoJSON = await unsplash.photos.getPhoto(photoId);
-		const photoObj = await getDownloadPhotoJSON.json();
-		unsplash.photos.downloadPhoto(photoObj);
+export const fetchPhotos = async (searchWord) => {
+  if (searchWord) {
+    const photoJSON = await unsplash.search.photos(searchWord, 1, 10, {
+      orientation: "portrait",
+    });
+    const photos = await photoJSON.json();
+    return photos;
+  } else {
+    return undefined;
+  }
+};
 
-		let response = await axios({
-			url: photoObj.urls.regular,
-			method: "GET",
-			responseType: "blob",
-		});
+// Pending Implementation (Refactoring)
+export const downloadPhotoType = async (photoId, type) => {
+  if (photoId) {
+    const getDownloadPhotoJSON = await unsplash.photos.getPhoto(photoId);
+    const photoObj = await getDownloadPhotoJSON.json();
+    unsplash.photos.downloadPhoto(photoObj);
 
-		let filename = photoObj.user.username + "-" + photoObj.id + ".jpg";
+    let response = undefined;
 
-		const url = window.URL.createObjectURL(new Blob([response.data]));
-		const link = document.createElement("a");
-		link.href = url;
-		link.setAttribute("download", filename);
-		document.body.appendChild(link);
-		link.click();
-	}
+    if (type == "regular") {
+      response = await axios({
+        url: photoObj.urls.regular,
+        method: "GET",
+        responseType: "blob",
+      });
+    } else if (type == "full") {
+      response = await axios({
+        url: photoObj.urls.full,
+        method: "GET",
+        responseType: "blob",
+      });
+    } else if (type == "small") {
+      response = await axios({
+        url: photoObj.urls.small,
+        method: "GET",
+        responseType: "blob",
+      });
+    }
+
+    let filename =
+      photoObj.user.username + "-" + photoObj.id + "-" + type + ".jpg";
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+  }
 };

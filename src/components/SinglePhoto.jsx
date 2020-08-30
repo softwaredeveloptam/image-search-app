@@ -1,58 +1,90 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import { downloadPhotoType } from "../utils/index";
 import "../styles/SinglePhotoModal.css";
 
 function SinglePhotoModal(props) {
+  const { photo, setShowModal } = props;
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
-	const { photo, setShowModal } = props;
-	const [Title, setTitle] = useState("");
-	const [Description, setDescription] = useState("");
-
-	const handleChange = (event) => {
+  const handleChangeTitle = (event) => {
     setTitle(event.target.value);
   };
 
-	return (
-		<div className="modal">
-			<div>
-				<img
-					className="modalImage"
-					src={photo.urls.small}
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value);
+  };
+
+  return (
+    <div className="modal">
+      <div>
+        <img
+          className="modalImage"
+          src={photo.urls.small}
           alt={photo.alt_description}
-				></img>
-				<br></br>
-				<button
-				onClick={()=> {
-					setShowModal(false);
-				}}
-				>Close
-				</button>
+        ></img>
+        <br></br>
+        <button
+          onClick={() => {
+            setShowModal(false);
+          }}
+        >
+          Close
+        </button>
+        <br />
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={handleChangeTitle}
+        />
 
-				<input
-					type="text"
-					placeholder="Title"
-					value={Title}
-					onChange={handleChange}
-    		/>
+        <br />
+        <input
+          type="text"
+          placeholder="Description"
+          value={description}
+          onChange={handleChangeDescription}
+        />
 
-				<button>
-					Download Small
-				</button>
+        <br />
 
-				<button>
-					Download Medium
-				</button>
+        <button
+          className={"btn"}
+          onClick={() => {
+            downloadPhotoType(photo.id, "small");
+          }}
+        >
+          Download Small
+        </button>
 
-				<button>
-					Download Large
-				</button>
-			</div>
-		</div>
-	)
+        <br />
+        <button
+          className={"btn"}
+          onClick={() => {
+            downloadPhotoType(photo.id, "regular");
+          }}
+        >
+          Download Regular
+        </button>
+
+        <br />
+        <button
+          className={"btn"}
+          onClick={() => {
+            downloadPhotoType(photo.id, "full");
+          }}
+        >
+          Download Full
+        </button>
+      </div>
+    </div>
+  );
 }
 
 function SinglePhotoModalPortal(props) {
-	return ReactDOM.createPortal(SinglePhotoModal(props), document.body);
+  return ReactDOM.createPortal(SinglePhotoModal(props), document.body);
 }
 
 export default SinglePhotoModalPortal;

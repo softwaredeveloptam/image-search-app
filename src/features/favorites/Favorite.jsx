@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchPhoto, downloadPhoto } from "../../utils/index";
+import { fetchPhoto, downloadPhotoType } from "../../utils/index";
 import { useSelector, useDispatch } from "react-redux";
 import {
   addPhotoToList,
@@ -83,7 +83,7 @@ export default function Favorite(props) {
                 <button
                   className={"btn"}
                   onClick={() => {
-                    downloadPhoto(photo.id);
+                    downloadPhotoType(photo.id, "regular");
                   }}
                 >
                   Download
