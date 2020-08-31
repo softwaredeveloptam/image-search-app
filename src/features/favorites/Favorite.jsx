@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { fetchPhoto, downloadPhotoType } from "../../utils/index";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  addPhotoToList,
-  removePhotoFromList,
-  favoritesSelectors,
-} from "./favoritesSlice";
+import { fetchPhoto } from "../../utils/index";
+import { useSelector } from "react-redux";
+import { removePhotoFromList, favoritesSelectors } from "./favoritesSlice";
 import SinglePhoto from "../../components/SinglePhoto";
+import HasHover from "../../components/HasHover";
+import HasNoHover from "../../components/HasNoHover";
 
-export default function Favorite(props) {
-  let favoritePhotos = useSelector(state => favoritesSelectors.selectById(state, "Default")) || {
+export default function Favorite() {
+  let favoritePhotos = useSelector((state) =>
+    favoritesSelectors.selectById(state, "Default")
+  ) || {
     photoArr: [],
   };
 
-  const dispatch = useDispatch();
-
   const [photos, setPhotos] = useState([]);
   const [hoverEffect, setHoverEffect] = useState(false);
+  const [hoverId, setHoverId] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [singlePhotoInfo, setSinglePhotoInfo] = useState({});
 
-
   async function loadPhotos() {
-
     if (favoritePhotos.photoArr.length > 1) {
       let photoArr = [];
 
@@ -30,7 +27,7 @@ export default function Favorite(props) {
         let newPhoto = await fetchPhoto(favoritePhotos.photoArr[x]);
         photoArr.push(newPhoto);
       }
-      console.log("We're setting new photos!")
+      console.log("We're setting new photos!");
       setPhotos(photoArr);
     } else {
       console.log("No photos saved in State");
@@ -64,56 +61,23 @@ export default function Favorite(props) {
 
       <div>
         {photos.map((photo) => {
-          if (hoverEffect) {
+          if (hoverEffect && photo.id == hoverId) {
             return (
-              <div key={photo.id}>
-                <img
-                  // className={"photoImg"}
-                  // onMouseEnter={() => setHoverEffect(true)}
-                  onClick={() => {
-                    console.log("We're here in Favorite Photos onClick");
-                    setShowModal(true);
-                    setSinglePhotoInfo(photo);
-                  }}
-                  onMouseLeave={() => setHoverEffect(false)}
-                  src={photo.urls.small}
-                  alt={photo.alt_description}
-                ></img>
-
-                <button
-                  className={"btn"}
-                  onClick={() => {
-                    downloadPhotoType(photo.id, "regular");
-                  }}
-                >
-                  Download
-                </button>
-
-                <p>
-                  Photo by{" "}
-                  <a
-                    href={`https://unsplash.com/@${photo.user.username}?utm_source=zehitomo-tam-coding-challenge&utm_medium=referral`}
-                  >
-                    {photo.user.name}
-                  </a>{" "}
-                  on{" "}
-                  <a href="https://unsplash.com/?utm_source=zehitomo-tam-coding-challenge&utm_medium=referral">
-                    Unsplash
-                  </a>
-                </p>
-              </div>
+              <HasHover
+                photo={photo}
+                setHoverEffect={setHoverEffect}
+                setShowModal={setShowModal}
+                setSinglePhotoInfo={setSinglePhotoInfo}
+                setHoverId={setHoverId}
+              />
             );
           } else {
             return (
-              <div
-                key={photo.id}
-              >
-                <img
-                  onMouseEnter={() => setHoverEffect(true)}
-                  src={photo.urls.small}
-                  alt={photo.alt_description}
-                ></img>
-              </div>
+              <HasNoHover
+                photo={photo}
+                setHoverEffect={setHoverEffect}
+                setHoverId={setHoverId}
+              />
             );
           }
         })}

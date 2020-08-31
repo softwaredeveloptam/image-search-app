@@ -61,7 +61,7 @@ export default function Home() {
         <>
           <div>
             {searchResults.results.map((photo) => {
-              if (hoverEffect && photo.id == hoverId) {
+              if (hoverEffect && photo.id === hoverId) {
                 return (
                   <HasHover
                     photo={photo}

@@ -6,6 +6,7 @@ import {
   favoritesSelectors,
   addList,
 } from "../features/favorites/favoritesSlice";
+import { Button } from "@material-ui/core";
 
 function HasHover(props) {
   const { photo, setHoverEffect, setShowModal, setSinglePhotoInfo } = props;
@@ -23,23 +24,27 @@ function HasHover(props) {
           setShowModal(true);
           setSinglePhotoInfo(photo);
         }}
-				onMouseLeave={() => setHoverEffect(false)}
+        onMouseLeave={() => setHoverEffect(false)}
         src={photo.urls.small}
         alt={photo.alt_description}
       ></img>
 
       <br />
 
-      <button
+      <Button
+        variant="contained"
+        color="primary"
         className={"btn"}
         onClick={() => {
           downloadPhotoType(photo.id, "regular");
         }}
       >
-        Download
-      </button>
+        ⬇
+      </Button>
 
-      <button
+      <Button
+        variant="contained"
+        color="primary"
         onClick={() => {
           if (listExists) {
             console.log("adding to an existing list");
@@ -61,8 +66,8 @@ function HasHover(props) {
           }
         }}
       >
-        Favorite
-      </button>
+        +
+      </Button>
 
       <p>
         Photo by{" "}
