@@ -26,19 +26,19 @@ export const downloadPhotoType = async (photoId, type) => {
 
     let response = undefined;
 
-    if (type == "regular") {
+    if (type === "regular") {
       response = await axios({
         url: photoObj.urls.regular,
         method: "GET",
         responseType: "blob",
       });
-    } else if (type == "full") {
+    } else if (type === "full") {
       response = await axios({
         url: photoObj.urls.full,
         method: "GET",
         responseType: "blob",
       });
-    } else if (type == "small") {
+    } else if (type === "small") {
       response = await axios({
         url: photoObj.urls.small,
         method: "GET",
