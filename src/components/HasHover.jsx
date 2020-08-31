@@ -6,10 +6,18 @@ import {
   favoritesSelectors,
   addList,
 } from "../features/favorites/favoritesSlice";
-import { Button } from "@material-ui/core";
+import { GridListTile, GridListTileBar, IconButton } from "@material-ui/core";
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
 function HasHover(props) {
-  const { photo, setHoverEffect, setShowModal, setSinglePhotoInfo } = props;
+  const {
+    classes,
+    photo,
+    setHoverEffect,
+    setShowModal,
+    setSinglePhotoInfo,
+  } = props;
   const dispatch = useDispatch();
 
   let listExists = useSelector((state) =>
@@ -17,7 +25,7 @@ function HasHover(props) {
   );
 
   return (
-    <div key={photo.id}>
+    <GridListTile key={photo.id}>
       <img
         onClick={() => {
           console.log("We're here in Home Photos onClick");
@@ -29,59 +37,64 @@ function HasHover(props) {
         alt={photo.alt_description}
       ></img>
 
-      <br />
+      <GridListTileBar
+        subtitle={
+          <span>
+            Photo by:{" "}
+            <a
+              href={`https://unsplash.com/@${photo.user.username}?utm_source=zehitomo-tam-coding-challenge&utm_medium=referral`}
+            >
+              {photo.user.name}
+            </a>{" "}
+            on{" "}
+            <a href="https://unsplash.com/?utm_source=zehitomo-tam-coding-challenge&utm_medium=referral">
+              Unsplash
+            </a>
+          </span>
+        }
+        actionIcon={
+          <>
+            <IconButton
+              className={classes.icon}
+              onClick={() => {
+                downloadPhotoType(photo.id, "regular");
+              }}
+            >
+              <ArrowDownwardIcon />
+            </IconButton>
 
-      <Button
-        variant="contained"
-        color="primary"
-        className={"btn"}
-        onClick={() => {
-          downloadPhotoType(photo.id, "regular");
-        }}
-      >
-        ⬇
-      </Button>
+            <IconButton
+              className={classes.icon}
+              aria-label={`info about this`}
+              onClick={() => {
+                if (listExists) {
+                  console.log("adding to an existing list");
+                  let newPhoto = {
+                    id: "Default",
+                    photoId: photo.id,
+                  };
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          if (listExists) {
-            console.log("adding to an existing list");
-            let newPhoto = {
-              id: "Default",
-              photoId: photo.id,
-            };
-
-            dispatch(addPhotoToList(newPhoto));
-          } else {
-            console.log("created a new list");
-            let newList = {
-              id: "Default",
-              listTitle: "Default",
-              description: "none",
-              photoArr: [photo.id],
-            };
-            dispatch(addList(newList));
-          }
-        }}
-      >
-        +
-      </Button>
-
-      <p>
-        Photo by{" "}
-        <a
-          href={`https://unsplash.com/@${photo.user.username}?utm_source=zehitomo-tam-coding-challenge&utm_medium=referral`}
-        >
-          {photo.user.name}
-        </a>{" "}
-        on{" "}
-        <a href="https://unsplash.com/?utm_source=zehitomo-tam-coding-challenge&utm_medium=referral">
-          Unsplash
-        </a>
-      </p>
-    </div>
+                  dispatch(addPhotoToList(newPhoto));
+                } else {
+                  console.log("created a new list");
+                  let newList = {
+                    id: "Default",
+                    listTitle: "Default",
+                    description: "none",
+                    photoArr: [photo.id],
+                  };
+                  dispatch(addList(newList));
+                }
+              }}
+            >
+              <FavoriteIcon />
+            </IconButton>
+          </>
+        }
+        onMouseEnter={() => setHoverEffect(true)}
+        onMouseLeave={() => setHoverEffect(false)}
+      />
+    </GridListTile>
   );
 }
 

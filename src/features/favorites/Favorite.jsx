@@ -6,6 +6,31 @@ import SinglePhoto from "../../components/SinglePhoto";
 import HasHover from "../../components/HasHover";
 import HasNoHover from "../../components/HasNoHover";
 
+// Styling
+import {
+  makeStyles,
+  GridList,
+  GridListTile,
+  ListSubheader,
+} from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+  },
+  // gridList: {
+  //   width: 1000,
+  //   height: 1000,
+  // },
+  icon: {
+    color: "rgba(255, 255, 255, 0.54)",
+  },
+}));
+
 export default function Favorite() {
   let favoritePhotos = useSelector((state) =>
     favoritesSelectors.selectById(state, "Default")
@@ -18,6 +43,8 @@ export default function Favorite() {
   const [hoverId, setHoverId] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [singlePhotoInfo, setSinglePhotoInfo] = useState({});
+
+  const classes = useStyles();
 
   async function loadPhotos() {
     if (favoritePhotos.photoArr.length > 1) {
@@ -41,47 +68,32 @@ export default function Favorite() {
 
   return (
     <div>
-      <div>
-        <button
-          onClick={() => {
-            console.log("** Favorite Photos **\n", favoritePhotos);
-            console.log("** Photos **\n", photos);
-          }}
-        >
-          Current State of Photos
-        </button>
-        <button
-          onClick={() => {
-            loadPhotos();
-          }}
-        >
-          Trigger Load Photos
-        </button>
-      </div>
-
-      <div>
-        {photos.map((photo) => {
-          if (hoverEffect && photo.id == hoverId) {
-            return (
-              <HasHover
-                photo={photo}
-                setHoverEffect={setHoverEffect}
-                setShowModal={setShowModal}
-                setSinglePhotoInfo={setSinglePhotoInfo}
-                setHoverId={setHoverId}
-              />
-            );
-          } else {
-            return (
-              <HasNoHover
-                photo={photo}
-                setHoverEffect={setHoverEffect}
-                setHoverId={setHoverId}
-              />
-            );
-          }
-        })}
-      </div>
+      <div className={classes.root}>
+            <GridList cellHeight={180} className={classes.gridList}>
+              {photos.map((photo) => {
+                if (hoverEffect && photo.id === hoverId) {
+                  return (
+                    <HasHover
+                      classes={classes}
+                      photo={photo}
+                      setHoverEffect={setHoverEffect}
+                      setShowModal={setShowModal}
+                      setSinglePhotoInfo={setSinglePhotoInfo}
+                      setHoverId={setHoverId}
+                    />
+                  );
+                } else {
+                  return (
+                    <HasNoHover
+                      photo={photo}
+                      setHoverEffect={setHoverEffect}
+                      setHoverId={setHoverId}
+                    />
+                  );
+                }
+              })}
+            </GridList>
+          </div>
 
       <div>
         {showModal ? (

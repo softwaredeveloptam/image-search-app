@@ -11,6 +11,31 @@ import SinglePhoto from "./SinglePhoto";
 import HasHover from "./HasHover";
 import HasNoHover from "./HasNoHover";
 
+// Styling
+import {
+  makeStyles,
+  GridList,
+  GridListTile,
+  ListSubheader,
+} from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+  },
+  // gridList: {
+  //   width: 1000,
+  //   height: 1000,
+  // },
+  icon: {
+    color: "rgba(255, 255, 255, 0.54)",
+  },
+}));
+
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(undefined);
@@ -19,6 +44,8 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [singlePhotoInfo, setSinglePhotoInfo] = useState({});
   const storeState = useStore();
+
+  const classes = useStyles();
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -48,6 +75,7 @@ export default function Home() {
         value={searchTerm}
         onChange={handleChange}
       />
+      <br/>
       <button
         onClick={() => {
           console.log("Search Term: ", searchTerm);
@@ -59,24 +87,34 @@ export default function Home() {
       </button>
       {searchResults ? (
         <>
-          <div>
-            {searchResults.results.map((photo) => {
-              if (hoverEffect && photo.id === hoverId) {
-                return (
-                  <HasHover
-                    photo={photo}
-                    setHoverEffect={setHoverEffect}
-                    setShowModal={setShowModal}
-                    setSinglePhotoInfo={setSinglePhotoInfo}
-                    setHoverId = {setHoverId}
-                  />
-                );
-              } else {
-                return (
-                  <HasNoHover photo={photo} setHoverEffect={setHoverEffect} setHoverId = {setHoverId} />
-                );
-              }
-            })}
+          <div className={classes.root}>
+            <GridList cellHeight={180} className={classes.gridList}>
+              <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
+                <ListSubheader component="div">{searchTerm}</ListSubheader>
+              </GridListTile>
+              {searchResults.results.map((photo) => {
+                if (hoverEffect && photo.id === hoverId) {
+                  return (
+                    <HasHover
+                      classes={classes}
+                      photo={photo}
+                      setHoverEffect={setHoverEffect}
+                      setShowModal={setShowModal}
+                      setSinglePhotoInfo={setSinglePhotoInfo}
+                      setHoverId={setHoverId}
+                    />
+                  );
+                } else {
+                  return (
+                    <HasNoHover
+                      photo={photo}
+                      setHoverEffect={setHoverEffect}
+                      setHoverId={setHoverId}
+                    />
+                  );
+                }
+              })}
+            </GridList>
           </div>
         </>
       ) : (
