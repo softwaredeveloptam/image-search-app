@@ -9,18 +9,17 @@ import { favoritesSelectors } from "./favoritesSlice";
 
 // Components
 import SinglePhoto from "../../components/SinglePhoto";
+import HasNoHover from "../../components/HasNoHover";
 
 // Styling
-import { makeStyles, GridList } from "@material-ui/core";
+import { makeStyles, GridList, Grid } from "@material-ui/core";
 import FavoriteHasHover from "./FavoriteHasHover";
-import HasNoHover from "../../components/HasNoHover";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-evenly",
-    overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
   },
   icon: {
@@ -69,7 +68,7 @@ export default function Favorite() {
   }, [renderPage]);
 
   return (
-    <>
+    <div>
     {photos ? (
         <div>
           <div className={classes.root}>
@@ -108,6 +107,6 @@ export default function Favorite() {
           <SinglePhoto photo={singlePhotoInfo} setShowModal={setShowModal} />
         ) : null}
       </div>
-    </>
+    </div>
   );
 }

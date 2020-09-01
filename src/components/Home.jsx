@@ -67,18 +67,18 @@ export default function Home() {
   return (
     <>
       <Grid item xs={12}>
-      <TextField
-        variant="filled"
-        margin="normal"
-        id="searchTerm"
-        label="Looking for..."
-        name="searchTerm"
-        autoFocus
-        value={searchTerm}
-        onChange={handleChange}
-        color="primary"
-        placeholder="Search"
-      />
+        <TextField
+          variant="filled"
+          margin="normal"
+          id="searchTerm"
+          label="Looking for..."
+          name="searchTerm"
+          autoFocus
+          value={searchTerm}
+          onChange={handleChange}
+          color="primary"
+          placeholder="Search"
+        />
       </Grid>
       <br />
       {/* <button
