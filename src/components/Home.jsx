@@ -81,7 +81,7 @@ export default function Home() {
       />
       </Grid>
       <br />
-      <button
+      {/* <button
         onClick={() => {
           console.log("Search Term: ", searchTerm);
           console.log("Search Results\n", searchResults);
@@ -89,7 +89,7 @@ export default function Home() {
         }}
       >
         Test
-      </button>
+      </button> */}
       {searchResults ? (
         <>
           <div className={classes.root}>

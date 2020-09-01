@@ -1,4 +1,4 @@
-import { createSlice, createEntityAdapter, current } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 
 const favoritesAdapter = createEntityAdapter();
 
@@ -39,7 +39,6 @@ export const favoritesSlice = createSlice({
             1
           )
         );
-        console.log(current(state));
       }
     },
   },
