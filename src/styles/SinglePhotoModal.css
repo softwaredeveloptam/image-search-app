@@ -23,6 +23,7 @@
     border-radius: 40px 10px;
     font-family: "Antic";
   }
+
   .modalImage {
     max-width: 100%;
     height: auto;
@@ -41,14 +42,17 @@
     background: #b76935;
     padding: 2px;
   }
+  
   .drinkCategory {
     text-align: left;
   }
+
   .ingredientListContainer {
     background: #b76935;
     padding: 2px;
     text-align: left;
   }
+
   .ingredientList {
     background: #b76935;
     padding: 2px;

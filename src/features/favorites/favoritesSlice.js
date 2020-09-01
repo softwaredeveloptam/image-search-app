@@ -18,21 +18,42 @@ export const favoritesSlice = createSlice({
       const { id } = action.payload;
       let list = state.entities[id];
 
-      if(list) {
-        favoritesAdapter.updateOne(state, state.entities[id].photoArr.push(action.payload.photoId));
-      }  
+      if (list) {
+        favoritesAdapter.updateOne(
+          state,
+          state.entities[id].photoArr.push(action.payload.photoId)
+        );
+      }
     },
     removePhotoFromList(state, action) {
       const { id } = action.payload;
-      const list = state.entities[id]
-      
-      // Add Logic for removing photo from a specific List   
+      const list = state.entities[id];
+
+      console.log(action.payload);
+
+      if (list) {
+        favoritesAdapter.updateOne(
+          state,
+          state.entities[id].photoArr.splice(
+            state.entities[id].photoArr.indexOf(action.payload.photoId),
+            1
+          )
+        );
+        console.log(current(state));
+      }
     },
   },
 });
 
-export const { addList, addPhotoToList, removeList, removePhotoFromList } = favoritesSlice.actions;
+export const {
+  addList,
+  addPhotoToList,
+  removeList,
+  removePhotoFromList,
+} = favoritesSlice.actions;
 
 export default favoritesSlice.reducer;
 
-export const favoritesSelectors = favoritesAdapter.getSelectors(state => state.favorites);
+export const favoritesSelectors = favoritesAdapter.getSelectors(
+  (state) => state.favorites
+);

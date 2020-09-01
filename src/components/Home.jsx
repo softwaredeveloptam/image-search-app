@@ -14,23 +14,20 @@ import HasNoHover from "./HasNoHover";
 // Styling
 import {
   makeStyles,
+  Grid,
   GridList,
   GridListTile,
   ListSubheader,
 } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden",
+    justifyContent: "space-evenly",
     backgroundColor: theme.palette.background.paper,
   },
-  // gridList: {
-  //   width: 1000,
-  //   height: 1000,
-  // },
   icon: {
     color: "rgba(255, 255, 255, 0.54)",
   },
@@ -69,13 +66,21 @@ export default function Home() {
 
   return (
     <>
-      <input
-        type="text"
-        placeholder="Search"
+      <Grid item xs={12}>
+      <TextField
+        variant="filled"
+        margin="normal"
+        id="searchTerm"
+        label="Looking for..."
+        name="searchTerm"
+        autoFocus
         value={searchTerm}
         onChange={handleChange}
+        color="primary"
+        placeholder="Search"
       />
-      <br/>
+      </Grid>
+      <br />
       <button
         onClick={() => {
           console.log("Search Term: ", searchTerm);
@@ -88,10 +93,7 @@ export default function Home() {
       {searchResults ? (
         <>
           <div className={classes.root}>
-            <GridList cellHeight={180} className={classes.gridList}>
-              <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
-                <ListSubheader component="div">{searchTerm}</ListSubheader>
-              </GridListTile>
+            <GridList cellHeight={180} className={classes.root} centered>
               {searchResults.results.map((photo) => {
                 if (hoverEffect && photo.id === hoverId) {
                   return (
