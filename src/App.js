@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 
 // React Router
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -24,6 +24,7 @@ const useStyles = makeStyles({
 
 function App() {
   const classes = useStyles();
+  const [value, setValue] = useState("/");
 
   return (
     <Router>
@@ -31,20 +32,46 @@ function App() {
         <Fragment>
           <nav>
             <Paper className={classes.root}>
-            <Tabs aria-label="simples tab example" indicatorColor="primary" textColor="primary" centered>
-              <Tab label="Home" value="/" component={Link} to="/" textColor="primary"/>
-              {/* <Link to="/">Home</Link> | */}
-              <Tab
-                label="Favorites"
-                value="/favorites"
-                component={Link}
-                to="/favorites"
-              />
-              {/* <Link to="/favorites">Favorites</Link> |{" "} */}
+              <Tabs
+                aria-label="simples tab example"
+                indicatorColor="primary"
+                textColor="primary"
+                centered
+                value={value}
+              >
+                <Tab
+                  label="Home"
+                  value="/"
+                  component={Link}
+                  to="/"
+                  textColor="primary"
+                  onClick={() => {
+                    setValue("/");
+                  }}
+                />
+                {/* <Link to="/">Home</Link> | */}
+                <Tab
+                  label="Favorites"
+                  value="/favorites"
+                  component={Link}
+                  to="/favorites"
+                  onClick={() => {
+                    setValue("/favorites");
+                  }}
+                />
+                {/* <Link to="/favorites">Favorites</Link> |{" "} */}
 
-              <Tab label="About" value="/about" component={Link} to="/about" />
-              {/* <Link to="/about">About</Link> */}
-            </Tabs>
+                <Tab
+                  label="About"
+                  value="/about"
+                  component={Link}
+                  to="/about"
+                  onClick={() => {
+                    setValue("/about");
+                  }}
+                />
+                {/* <Link to="/about">About</Link> */}
+              </Tabs>
             </Paper>
           </nav>
           <Switch>

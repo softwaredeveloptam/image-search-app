@@ -16,10 +16,10 @@ import {
   makeStyles,
   Grid,
   GridList,
-  GridListTile,
-  ListSubheader,
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,10 +78,17 @@ export default function Home() {
           onChange={handleChange}
           color="primary"
           placeholder="Search"
+          InputProps={{
+            endAdornment: (
+            <InputAdornment position="end">
+              <SearchIcon />
+            </InputAdornment>
+            ),
+          }}
         />
       </Grid>
       <br />
-      {/* <button
+      <button
         onClick={() => {
           console.log("Search Term: ", searchTerm);
           console.log("Search Results\n", searchResults);
@@ -89,11 +96,11 @@ export default function Home() {
         }}
       >
         Test
-      </button> */}
+      </button>
       {searchResults ? (
         <>
           <div className={classes.root}>
-            <GridList cellHeight={180} className={classes.root} centered>
+            <GridList cellHeight={180} className={classes.root} centered="true">
               {searchResults.results.map((photo) => {
                 if (hoverEffect && photo.id === hoverId) {
                   return (

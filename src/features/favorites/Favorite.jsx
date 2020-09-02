@@ -12,8 +12,12 @@ import SinglePhoto from "../../components/SinglePhoto";
 import HasNoHover from "../../components/HasNoHover";
 
 // Styling
-import { makeStyles, GridList, Grid } from "@material-ui/core";
+import { makeStyles, GridList } from "@material-ui/core";
 import FavoriteHasHover from "./FavoriteHasHover";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,11 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Favorite() {
-  let favoritePhotos = useSelector((state) =>
-    favoritesSelectors.selectById(state, "Default")
-  ) || {
-    photoArr: [],
-  };
+  const classes = useStyles();
 
   const [photos, setPhotos] = useState(undefined);
   const [hoverEffect, setHoverEffect] = useState(false);
@@ -40,8 +40,16 @@ export default function Favorite() {
   const [showModal, setShowModal] = useState(false);
   const [singlePhotoInfo, setSinglePhotoInfo] = useState({});
   const [renderPage, setRenderPage] = useState(true);
+  const [listName, setListName] = useState("Default");
 
-  const classes = useStyles();
+  let favoritePhotos = useSelector((state) =>
+    favoritesSelectors.selectById(state, listName)
+  ) || {
+    photoArr: [],
+  };
+
+  let currentLists =
+    useSelector((state) => favoritesSelectors.selectIds(state)) || false;
 
   async function loadPhotos() {
     if (favoritePhotos.photoArr.length >= 1) {
@@ -61,52 +69,80 @@ export default function Favorite() {
   }
 
   useEffect(() => {
-    if(renderPage === true) {
+    if (renderPage === true) {
       setRenderPage(false);
       loadPhotos();
     }
   }, [renderPage]);
 
   return (
-    <div>
-    {photos ? (
+    // Select from a Drop down
+    // When selection occurs, show the list
+    // Allow the list title and description to be editted
+    <>
+      {currentLists ? (
         <div>
-          <div className={classes.root}>
-            <GridList cellHeight={180} className={classes.gridList}>
-              {photos.map((photo) => {
-                if (hoverEffect && photo.id === hoverId) {
-                  return (
-                    <FavoriteHasHover
-                      classes={classes}
-                      photo={photo}
-                      setHoverEffect={setHoverEffect}
-                      setShowModal={setShowModal}
-                      setSinglePhotoInfo={setSinglePhotoInfo}
-                      setHoverId={setHoverId}
-                      setRenderPage={setRenderPage}
-                    />
-                  );
-                } else {
-                  return (
-                    <HasNoHover
-                      photo={photo}
-                      setHoverEffect={setHoverEffect}
-                      setHoverId={setHoverId}
-                    />
-                  );
-                }
+          <FormControl className={classes.formControl}>
+            <InputLabel id="list-selection-label">Select A List</InputLabel>
+            <Select labelId="list-selection-label" id="download-select">
+              {currentLists.map((listId) => {
+                return (
+                  <MenuItem
+                    onClick={() => {
+                      setListName(listId);
+                      setRenderPage(true);
+                    }}
+                  >
+                    {listId}
+                  </MenuItem>
+                );
               })}
-            </GridList>
-          </div>
+            </Select>
+          </FormControl>
         </div>
-    ) : (
-      <p>There are no favorited photos to render</p>
-    )}
+      ) : (
+        <p>There are no favorited photos to render</p>
+      )}
       <div>
-        {showModal ? (
-          <SinglePhoto photo={singlePhotoInfo} setShowModal={setShowModal} />
-        ) : null}
+        {photos ? (
+          <div>
+            <div className={classes.root}>
+              <GridList cellHeight={180} className={classes.gridList}>
+                {photos.map((photo) => {
+                  if (hoverEffect && photo.id === hoverId) {
+                    return (
+                      <FavoriteHasHover
+                        classes={classes}
+                        photo={photo}
+                        setHoverEffect={setHoverEffect}
+                        setShowModal={setShowModal}
+                        setSinglePhotoInfo={setSinglePhotoInfo}
+                        setHoverId={setHoverId}
+                        setRenderPage={setRenderPage}
+                      />
+                    );
+                  } else {
+                    return (
+                      <HasNoHover
+                        photo={photo}
+                        setHoverEffect={setHoverEffect}
+                        setHoverId={setHoverId}
+                      />
+                    );
+                  }
+                })}
+              </GridList>
+            </div>
+          </div>
+        ) : (
+          <p>There are no favorited photos to render</p>
+        )}
+        <div>
+          {showModal ? (
+            <SinglePhoto photo={singlePhotoInfo} setShowModal={setShowModal} />
+          ) : null}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
