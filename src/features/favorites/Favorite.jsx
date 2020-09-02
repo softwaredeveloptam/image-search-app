@@ -26,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-evenly",
     backgroundColor: theme.palette.background.paper,
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
   icon: {
     color: "rgba(255, 255, 255, 0.54)",
   },
